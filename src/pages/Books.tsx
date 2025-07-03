@@ -14,6 +14,7 @@ import { useDeleteBookMutation, useGetBooksQuery } from "@/redux/api/bookApi";
 import type { IBook } from "@/types/book";
 import { Loader2, Pencil, Trash2, BookOpen } from "lucide-react";
 import { Link } from "react-router";
+import { toast } from "sonner";
 
 const Books = () => {
   const { data: books, isLoading, isError } = useGetBooksQuery();
@@ -23,8 +24,16 @@ const Books = () => {
   const handleDelete = async (id: string) => {
     try {
       await deleteBook(id).unwrap();
+      toast("Deleted", {
+        description: "Book has been removed",
+        action: {
+          label: "Undo",
+          onClick: () => console.log("undo not available"),
+        },
+      });
     } catch (err) {
-      console.error("Delete failed", err);
+      console.log(err);
+      toast.error("Failed to delete the book. Please try again.");
     }
   };
 
