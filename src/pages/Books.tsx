@@ -1,5 +1,16 @@
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { useGetBooksQuery } from "@/redux/api/bookApi";
+import { useDeleteBookMutation, useGetBooksQuery } from "@/redux/api/bookApi";
 import type { IBook } from "@/types/book";
 import { Loader2, Pencil, Trash2, BookOpen } from "lucide-react";
 import { Link } from "react-router";
@@ -7,7 +18,17 @@ import { Link } from "react-router";
 const Books = () => {
   const { data: books, isLoading, isError } = useGetBooksQuery();
 
-  if (isLoading) {
+  const [deleteBook, { isLoading: deleting }] = useDeleteBookMutation();
+
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteBook(id).unwrap();
+    } catch (err) {
+      console.error("Delete failed", err);
+    }
+  };
+
+  if (isLoading || deleting) {
     return (
       <div className="flex justify-center items-center h-64">
         <Loader2 className="animate-spin h-8 w-8 text-primary" />
@@ -78,9 +99,31 @@ const Books = () => {
                       <Pencil className="w-4 h-4" />
                     </Button>
                   </Link>
-                  <Button size="sm" variant="destructive">
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button size="sm" variant="destructive">
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Delete this book?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This action cannot be undone.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={() => handleDelete(book._id)}
+                          className="bg-destructive text-white hover:bg-destructive/90"
+                        >
+                          Confirm Delete
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+
                   <Link to={`/borrow/${book._id}`}>
                     <Button size="sm" variant="default">
                       <BookOpen className="w-4 h-4" />
