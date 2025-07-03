@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { Menu, X } from "lucide-react";
-import logo from "../../../../public/logo.png";
+import logo from "../../../assets/logo.png";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Link, NavLink } from "react-router";
 
