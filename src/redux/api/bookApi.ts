@@ -46,11 +46,19 @@ export const bookApi = createApi({
       }),
       invalidatesTags: ["Books", "Borrow"],
     }),
-    getBorrowSummary: builder.query<any[], void>({
+    getBorrowSummary: builder.query({
       query: () => "/borrow",
       transformResponse: (response: { success: boolean; data: any[] }) =>
         response.data,
       providesTags: ["Borrow"],
+    }),
+    updateBook: builder.mutation({
+      query: ({ id, book }) => ({
+        url: `/books/${id}`,
+        method: "PUT",
+        body: book,
+      }),
+      invalidatesTags: ["Books"],
     }),
   }),
 });
@@ -62,4 +70,5 @@ export const {
   useGetBookByIdQuery,
   useBorrowBookMutation,
   useGetBorrowSummaryQuery,
+  useUpdateBookMutation,
 } = bookApi;

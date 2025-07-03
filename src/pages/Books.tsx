@@ -139,7 +139,16 @@ const Books = () => {
                   </AlertDialog>
 
                   <Link to={`/borrow/${book._id}`}>
-                    <Button size="sm" variant="default">
+                    <Button
+                      size="sm"
+                      variant="default"
+                      disabled={!book.available}
+                      title={
+                        !book.available
+                          ? "Book is unavailable"
+                          : "Borrow this book"
+                      }
+                    >
                       <BookOpen className="w-4 h-4" />
                     </Button>
                   </Link>
