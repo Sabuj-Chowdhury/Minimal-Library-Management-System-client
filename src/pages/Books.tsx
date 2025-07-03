@@ -12,7 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useDeleteBookMutation, useGetBooksQuery } from "@/redux/api/bookApi";
 import type { IBook } from "@/types/book";
-import { Loader2, Pencil, Trash2, BookOpen } from "lucide-react";
+import { Loader2, Pencil, Trash2, BookOpen, Eye } from "lucide-react";
 import { Link } from "react-router";
 import { toast } from "sonner";
 
@@ -103,6 +103,11 @@ const Books = () => {
                   )}
                 </td>
                 <td className="px-4 py-3 text-sm space-x-2">
+                  <Link to={`/books/${book._id}`}>
+                    <Button size="sm" variant="secondary">
+                      <Eye className="w-4 h-4" />
+                    </Button>
+                  </Link>
                   <Link to={`/edit-book/${book._id}`}>
                     <Button size="sm" variant="outline">
                       <Pencil className="w-4 h-4" />
