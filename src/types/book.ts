@@ -4,7 +4,19 @@ export interface IBook {
   author: string;
   genre: string;
   isbn: string;
+  description: string;
   copies: number;
   available: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface IBookInput {
+  title: string;
+  author: string;
+  genre: string;
+  isbn: string;
   description: string;
+  copies: number;
+  available: boolean;
 }

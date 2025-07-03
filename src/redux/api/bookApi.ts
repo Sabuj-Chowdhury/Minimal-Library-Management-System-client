@@ -1,4 +1,4 @@
-import type { IBook } from "@/types/book";
+import type { IBook, IBookInput } from "@/types/book";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const bookApi = createApi({
@@ -21,7 +21,16 @@ export const bookApi = createApi({
       }),
       invalidatesTags: ["Books"],
     }),
+    addBook: builder.mutation<{ message: string }, IBookInput>({
+      query: (book) => ({
+        url: "/books",
+        method: "POST",
+        body: book,
+      }),
+      invalidatesTags: ["Books"],
+    }),
   }),
 });
 
-export const { useGetBooksQuery, useDeleteBookMutation } = bookApi;
+export const { useGetBooksQuery, useDeleteBookMutation, useAddBookMutation } =
+  bookApi;
