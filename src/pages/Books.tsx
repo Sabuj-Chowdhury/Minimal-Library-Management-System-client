@@ -103,7 +103,7 @@ const Books = () => {
                   )}
                 </td>
                 <td className="px-4 py-3 text-sm space-x-2">
-                  <Link to={`/books/${book._id}`}>
+                  <Link to={`/book/${book._id}`}>
                     <Button size="sm" variant="secondary">
                       <Eye className="w-4 h-4" />
                     </Button>
