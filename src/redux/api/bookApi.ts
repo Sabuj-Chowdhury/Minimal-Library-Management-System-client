@@ -6,7 +6,7 @@ export const bookApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "https://library-management-api-03.vercel.app/api",
   }),
-  tagTypes: ["Books", "Book"],
+  tagTypes: ["Books", "Book", "Borrow"],
   endpoints: (builder) => ({
     getBooks: builder.query<IBook[], void>({
       query: () => "/books",
@@ -44,7 +44,13 @@ export const bookApi = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["Books"],
+      invalidatesTags: ["Books", "Borrow"],
+    }),
+    getBorrowSummary: builder.query<any[], void>({
+      query: () => "/borrow",
+      transformResponse: (response: { success: boolean; data: any[] }) =>
+        response.data,
+      providesTags: ["Borrow"],
     }),
   }),
 });
@@ -55,4 +61,5 @@ export const {
   useAddBookMutation,
   useGetBookByIdQuery,
   useBorrowBookMutation,
+  useGetBorrowSummaryQuery,
 } = bookApi;
