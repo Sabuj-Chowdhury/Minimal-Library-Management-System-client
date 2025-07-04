@@ -15,7 +15,12 @@ const BorrowBook = () => {
   const { bookId } = useParams();
   const navigate = useNavigate();
 
-  const { data: book, isLoading, isError } = useGetBookByIdQuery(bookId!);
+  const {
+    data: book,
+    isLoading,
+    isError,
+    refetch,
+  } = useGetBookByIdQuery(bookId!);
   const [borrowBook, { isLoading: borrowing }] = useBorrowBookMutation();
 
   const [quantity, setQuantity] = useState(1);
@@ -25,7 +30,7 @@ const BorrowBook = () => {
     if (!book) return;
 
     if (!dueDate) {
-      toast.error("📅 Please select a due date.");
+      toast.error("Please select a due date.");
       return;
     }
 
@@ -37,11 +42,12 @@ const BorrowBook = () => {
 
     try {
       await borrowBook(payload).unwrap();
+      await refetch();
       toast.success("📚 Book borrowed successfully!");
       navigate("/borrow-summary");
     } catch (error) {
       console.error(error);
-      toast.error("❌ Failed to borrow the book.");
+      toast.error("Failed to borrow the book.");
     }
   };
 

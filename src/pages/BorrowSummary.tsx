@@ -21,7 +21,7 @@ const BorrowSummary = () => {
   if (isError || !Array.isArray(borrowSummaryRes)) {
     return (
       <div className="text-center mt-10 text-destructive font-semibold">
-        ❌ Failed to load borrow summary.
+        No borrowed book yet.
       </div>
     );
   }

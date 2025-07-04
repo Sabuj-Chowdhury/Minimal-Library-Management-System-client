@@ -1,4 +1,5 @@
 import type { IBook, IBookInput } from "@/types/book";
+import type { IBorrowSummary } from "@/types/BorrowSummar";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const bookApi = createApi({
@@ -8,12 +9,15 @@ export const bookApi = createApi({
   }),
   tagTypes: ["Books", "Book", "Borrow"],
   endpoints: (builder) => ({
+    //  Get all books
     getBooks: builder.query<IBook[], void>({
       query: () => "/books",
       transformResponse: (response: { success: boolean; data: IBook[] }) =>
         response.data,
       providesTags: ["Books"],
     }),
+
+    //  Delete book
     deleteBook: builder.mutation<{ message: string }, string>({
       query: (bookId) => ({
         url: `/books/${bookId}`,
@@ -21,6 +25,8 @@ export const bookApi = createApi({
       }),
       invalidatesTags: ["Books"],
     }),
+
+    //  Add new book
     addBook: builder.mutation<{ message: string }, IBookInput>({
       query: (book) => ({
         url: "/books",
@@ -29,12 +35,16 @@ export const bookApi = createApi({
       }),
       invalidatesTags: ["Books"],
     }),
+
+    //  Get book by ID
     getBookById: builder.query<IBook, string>({
       query: (id) => `/books/${id}`,
       transformResponse: (response: { success: boolean; data: IBook }) =>
         response.data,
+      providesTags: (_result, _error, id) => [{ type: "Book", id }],
     }),
 
+    //  Borrow book
     borrowBook: builder.mutation<
       any,
       { book: string; quantity: number; dueDate: string }
@@ -44,21 +54,37 @@ export const bookApi = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["Books", "Borrow"],
+      invalidatesTags: (_result, _error, body) => [
+        "Books",
+        "Borrow",
+        { type: "Book", id: body.book },
+      ],
     }),
-    getBorrowSummary: builder.query({
+
+    //  Get borrow summary
+    getBorrowSummary: builder.query<IBorrowSummary[], void>({
       query: () => "/borrow",
-      transformResponse: (response: { success: boolean; data: any[] }) =>
-        response.data,
+      transformResponse: (response: {
+        success: boolean;
+        data: IBorrowSummary[];
+      }) => response.data,
       providesTags: ["Borrow"],
     }),
-    updateBook: builder.mutation({
+
+    //  Update book
+    updateBook: builder.mutation<
+      { message: string },
+      { id: string; book: Partial<IBookInput> }
+    >({
       query: ({ id, book }) => ({
         url: `/books/${id}`,
         method: "PUT",
         body: book,
       }),
-      invalidatesTags: ["Books"],
+      invalidatesTags: (_result, _error, { id }) => [
+        "Books",
+        { type: "Book", id },
+      ],
     }),
   }),
 });

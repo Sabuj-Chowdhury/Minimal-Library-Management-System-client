@@ -8,9 +8,7 @@ import { Link } from "react-router";
 
 const BookDetails = () => {
   const { id } = useParams();
-  const { data, isLoading, isError } = useGetBookByIdQuery(id!);
-
-  const book = data?.data;
+  const { data: book, isLoading, isError } = useGetBookByIdQuery(id!);
 
   if (isLoading) {
     return (
@@ -23,7 +21,7 @@ const BookDetails = () => {
   if (isError || !book) {
     return (
       <div className="text-center mt-20 text-destructive text-lg font-semibold">
-        ❌ Book not found or failed to load.
+        Book not found or failed to load.
       </div>
     );
   }

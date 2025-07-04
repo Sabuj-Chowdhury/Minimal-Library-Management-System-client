@@ -48,7 +48,7 @@ const Books = () => {
   if (isError || !books) {
     return (
       <div className="text-center text-destructive font-semibold mt-10">
-        Failed to load books.
+        No Books found.
       </div>
     );
   }

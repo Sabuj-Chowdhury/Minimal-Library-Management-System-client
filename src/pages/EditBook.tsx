@@ -10,22 +10,44 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
-import type { IBookInput } from "@/types/book";
+
+type Genre =
+  | "FICTION"
+  | "NON_FICTION"
+  | "SCIENCE"
+  | "HISTORY"
+  | "BIOGRAPHY"
+  | "FANTASY";
+
+type BookFormData = {
+  title: string;
+  author: string;
+  genre: Genre;
+  isbn: string | number;
+  description: string;
+  copies: number;
+  available: boolean;
+};
 
 const EditBook = () => {
   const { bookId } = useParams();
   const navigate = useNavigate();
   const { data: book, isLoading } = useGetBookByIdQuery(bookId!);
   const [updateBook, { isLoading: updating }] = useUpdateBookMutation();
-  const { register, handleSubmit, reset } = useForm<IBookInput>();
+  const { register, handleSubmit } = useForm<BookFormData>();
 
-  const onSubmit = async (data: IBookInput) => {
+  const onSubmit = async (data: BookFormData) => {
     try {
+      if (typeof data.copies === "number") {
+        data.available = data.copies > 0;
+      }
+
       await updateBook({ id: bookId!, book: data }).unwrap();
-      toast.success("✅ Book updated successfully!");
+      toast.success(" Book updated successfully!");
       navigate("/books");
     } catch (error) {
-      toast.error("❌ Failed to update book.");
+      console.log(error);
+      toast.error(" Failed to update book.");
     }
   };
 
@@ -76,7 +98,7 @@ const EditBook = () => {
           <Input
             type="number"
             defaultValue={book.copies}
-            {...register("copies")}
+            {...register("copies", { valueAsNumber: true })}
           />
         </div>
         <Button type="submit" disabled={updating}>

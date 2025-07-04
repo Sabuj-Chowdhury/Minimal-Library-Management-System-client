@@ -9,7 +9,7 @@ export interface IBook {
     | "HISTORY"
     | "BIOGRAPHY"
     | "FANTASY";
-  isbn: string;
+  isbn: number;
   description: string;
   copies: number;
   available: boolean;
@@ -17,17 +17,19 @@ export interface IBook {
   updatedAt?: string;
 }
 
+type Genre =
+  | "FICTION"
+  | "NON_FICTION"
+  | "SCIENCE"
+  | "HISTORY"
+  | "BIOGRAPHY"
+  | "FANTASY";
 export interface IBookInput {
   title: string;
   author: string;
-  genre:
-    | "FICTION"
-    | "NON_FICTION"
-    | "SCIENCE"
-    | "HISTORY"
-    | "BIOGRAPHY"
-    | "FANTASY";
-  isbn: string;
+  genre: Genre;
+  isbn: string | number;
   description: string;
   copies: number;
+  available: boolean;
 }
