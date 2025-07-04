@@ -2,7 +2,7 @@
 
 A minimal, modern, and scalable **Library Management System** built using **React**, **Redux Toolkit Query**, **TypeScript**, and a RESTful **Node.js (Express)** backend. This project allows users to browse, borrow, and manage books efficiently, with real-time data synchronization and a clean UI powered by TailwindCSS and Shadcn UI.
 
-🌐 **Live URL**: [https://library-management-03.vercel.app](https://library-management-03.vercel.app)
+🌐 **Live URL**: [https://minimal-library-management-system-c.vercel.app](https://minimal-library-management-system-c.vercel.app)
 
 ---
 
