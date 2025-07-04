@@ -131,9 +131,9 @@ npm run dev
 
 ## 👨‍💻 Author
 
-**Your Name**  
-📧 your.email@example.com  
-🔗 [Portfolio Website](https://your-portfolio.com)
+**Sabuj Chowdhury**  
+📧 sabujchowdhury00@gmail.com  
+🔗 [Portfolio Website](https://sabuj-portfolio-28494.web.app)
 
 ---
 
